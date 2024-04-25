@@ -112,6 +112,16 @@ public class UIManager {
         goBackButton.addActionListener(new goBackListener());
         goBackButton.setBounds(leftBorder, 800, 120, 30);
         startSelBtContainer.add(goBackButton);
+
+        JLabel sourceLabel = new JLabel("Source code for this project is available at:", SwingConstants.RIGHT);
+        sourceLabel.setFont(smallerGameFont);
+        sourceLabel.setBounds(screenWidth - leftBorder - 600, 800, 600, 40);
+        startSelBtContainer.add(sourceLabel);
+
+        JLabel repoLabel = new JLabel("https://github.com/Deniz-Sahin-567/BilboardGameSelector/", SwingConstants.RIGHT);
+        repoLabel.setFont(smallerGameFont);
+        repoLabel.setBounds(screenWidth - leftBorder - 550, 830, 600, 40);
+        startSelBtContainer.add(repoLabel);
         
         startFrame.add(startSelBtContainer);
 
