@@ -20,7 +20,7 @@ public class Game {
                 case 1:
                     return "Party";
                 case 2:
-                    return "Eighter";
+                    return "Either";
                 default:
                     break;
             }
@@ -35,7 +35,7 @@ public class Game {
                     return 0;
                 case "Party":
                     return 1;
-                case "Eighter":
+                case "Either":
                     return 2;
                 default:
                     break;

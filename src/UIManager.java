@@ -251,7 +251,7 @@ public class UIManager {
         step3ExLabel.setBounds(leftBorder + 60, 0, screenWidth, 780);
         mainContainer.add(step3ExLabel);
 
-        JLabel step3Ex2Label = new JLabel("Also, we don't know some of the games eighter so don't get your hopes too high. :)", SwingConstants.LEFT);
+        JLabel step3Ex2Label = new JLabel("Also, we don't know some of the games either so don't get your hopes too high. :)", SwingConstants.LEFT);
         step3Ex2Label.setFont(smallerGameFont);
         step3Ex2Label.setBounds(leftBorder + 60, 0, screenWidth, 840);
         mainContainer.add(step3Ex2Label);
