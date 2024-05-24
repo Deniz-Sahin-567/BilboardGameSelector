@@ -41,7 +41,7 @@ public class GameSelector {
     private static Node firstNode;
     
     //UI Elements
-    private static JFrame selectionFrame;
+    public static JFrame selectionFrame;
     private static int curSelFrame;
     private static JTabbedPane questionPane;
     private static ButtonGroup[] answers;

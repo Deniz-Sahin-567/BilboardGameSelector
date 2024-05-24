@@ -27,7 +27,8 @@ public class UIManager {
     //defining private variables
     private static JFrame startFrame;
     private static JFrame gameViewFrame;
-    private static listTimerListener timerAction;
+    public static listTimerListener timerAction;
+    private static boolean selectionBeingMade;
 
     //Fonts
     public final static Font TITLE_FONT = new Font("Cooper Black", 1, 90); //Britannic Bold, Cooper Black
@@ -63,7 +64,9 @@ public class UIManager {
 
         timerDelay = 10;
         timerAction = new listTimerListener();
-        new Timer(timerDelay * 1000, timerAction).start();;
+        new Timer(timerDelay * 1000, timerAction).start();
+
+        selectionBeingMade = false;
 
         screenHeight = ge.getMaximumWindowBounds().height;
         screenWidth = ge.getMaximumWindowBounds().width;
@@ -440,13 +443,23 @@ public class UIManager {
             
             //System.out.println("Timer tick " + secs);
 
-            if(gameViewFrame != null && gameViewFrame.isVisible())
+            if(selectionBeingMade || (gameViewFrame != null && gameViewFrame.isVisible()))
             {
                 secs += timerDelay;
                 
                 if(secs > 180)
                 {
-                    gameViewFrame.setVisible(false);
+                    if(gameViewFrame != null)
+                    {
+                        gameViewFrame.setVisible(false);
+                    }
+
+                    //if the selection frame is active
+                    if(selectionBeingMade)
+                    {
+                        GameSelector.selectionFrame.setVisible(false);
+                    }
+
                     secs = 0;
                 }
             }
@@ -463,6 +476,7 @@ public class UIManager {
 
     private class prefSelListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
+            selectionBeingMade = true;
             createGameSelectionFrame();
         }
     }
@@ -609,6 +623,9 @@ public class UIManager {
      */
     public void gameSelectionDone(Game[] sortedGames)
     {
+        selectionBeingMade = false;
+        timerAction.resetTimer();
+
         curGames = sortedGames;
 
         initializeGameViewFrame();
