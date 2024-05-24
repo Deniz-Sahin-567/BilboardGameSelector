@@ -4,7 +4,7 @@ Board Game Selection Algorithm and Java Program
 
 ## How to use this program
 In order to use this program: 
-- Compile the files in the src directory into a .jar file.
+- Compile the files in the src directory into a .jar file. (Or download the executable from the release files)
 - Add the file named GameList.txt into the same directory as your executable.
 - Run the executable.
 
