@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 public class UIManager {
 
@@ -22,11 +23,11 @@ public class UIManager {
     //screen size variables
     private static int screenWidth;
     private static int screenHeight;
-    
 
     //defining private variables
     private static JFrame startFrame;
     private static JFrame gameViewFrame;
+    private static listTimerListener timerAction;
 
     //Fonts
     public final static Font TITLE_FONT = new Font("Cooper Black", 1, 90); //Britannic Bold, Cooper Black
@@ -34,15 +35,16 @@ public class UIManager {
     public final static Font TO_START_FONT = new Font(TITLE_FONT.getFontName(), 0, 25);
     public final static Font SMALLER_GAME_FONT = new Font(GAME_FONT.getFontName(), 0, 20);
 
-
     public final static Color BUTTON_COLOR = new Color(0x38225b);
     public final static Color BACKGROUND_COLOR = new Color(0xe3acbc);
     public final static Color BUTTON_TEXT_COLOR = new Color(0xe3acbc);
     public final static Color TITLE_COLOR = new Color(0x38225b);
     public final static Color GAME_FONT_COLOR = new Color(0x38225b);
 
+    //Functional variables
     private static GameArray ga;
     private static Game[] curGames;
+    private static int timerDelay;
 
 
     //#endregion Variables
@@ -52,12 +54,16 @@ public class UIManager {
         ga = gameArray;
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
-        for(String str : ge.getAvailableFontFamilyNames())
+        /*for(String str : ge.getAvailableFontFamilyNames())
         {
             System.out.println(str);
-        }
+        }*/
 
         gameViewFrame = null;
+
+        timerDelay = 10;
+        timerAction = new listTimerListener();
+        new Timer(timerDelay * 1000, timerAction).start();;
 
         screenHeight = ge.getMaximumWindowBounds().height;
         screenWidth = ge.getMaximumWindowBounds().width;
@@ -250,7 +256,7 @@ public class UIManager {
 
     private void createGameSelectionFrame()
     {
-        GameSelector gameSelector = new GameSelector(ga, this);
+        new GameSelector(ga, this);
     }
 
     private void createHowToFrame()
@@ -372,6 +378,9 @@ public class UIManager {
         }
 
         public void actionPerformed(ActionEvent e) {
+
+            timerAction.resetTimer();
+
             mainContainer.getComponent(1).setVisible(false);
             mainContainer.remove(1);
             if(e.getSource().hashCode() == nextButtonHash)
@@ -410,6 +419,45 @@ public class UIManager {
     private class gameListListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             createGameListFrame();
+        }
+    }
+
+    /**
+     * This is an inner class.
+     * List Timer Listener class for the game list timer.
+     * This class is invoked every time the timer goes off and checks if the game list needs to be removed from the screen.
+     */
+    private class listTimerListener implements ActionListener{
+        
+        private int secs;
+
+        public listTimerListener()
+        {
+            secs = 0;
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            
+            //System.out.println("Timer tick " + secs);
+
+            if(gameViewFrame != null && gameViewFrame.isVisible())
+            {
+                secs += timerDelay;
+                
+                if(secs > 180)
+                {
+                    gameViewFrame.setVisible(false);
+                    secs = 0;
+                }
+            }
+            else {
+                secs = 0;
+            }
+        }
+
+        public void resetTimer()
+        {
+            secs = 0;
         }
     }
 

@@ -10,6 +10,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         GameArray ga = new GameArray("GameList.txt");
         
-        UIManager uiMan = new UIManager(ga);
+        new UIManager(ga);
     }
 }

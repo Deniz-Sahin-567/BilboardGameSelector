@@ -432,7 +432,7 @@ public class GameSelector {
             
             if(buttonValue * playTimeCoeff < curNode.game.getMaxPlayTime() || buttonValue / playTimeCoeff> curNode.game.getMinPlayTime()) 
             {
-                System.out.print("Due to game length of " + buttonValue);
+                System.out.print("Due to game length of " + buttonValue + " ");
                 curNode.removeNode(prevNode);
                 return;
             } 
