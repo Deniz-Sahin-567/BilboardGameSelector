@@ -8,9 +8,6 @@ In order to use this program:
 - Add the file named GameList.txt into the same directory as your executable.
 - Run the executable.
 
-> [!NOTE]
-> The program is only exitable on the main screen for public usability purposes.
-
 ## How to change the game list
 In order to run the program with a different game list:
 - Follow the steps in the how to use this program.
