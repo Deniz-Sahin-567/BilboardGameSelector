@@ -418,9 +418,9 @@ public class GameSelector {
             {
                 if(opPlC == buttonValue)
                 {
-                    System.out.print("Due to optimal player selection score of " + curNode.game.getName() + " changed from " + curNode.score);
+                    //System.out.print("Due to optimal player count, score of " + curNode.game.getName() + " changed from " + curNode.score);
                     curNode.score = (int) (curNode.score * optPCoeff);
-                    System.out.println(" to " + curNode.score);
+                    //System.out.println(" to " + curNode.score);
                 }
             }
         }
@@ -456,9 +456,9 @@ public class GameSelector {
         {
             int buttonValue = Integer.parseInt(answers[3].getSelection().getActionCommand());
 
-            System.out.print("Due to optimal player selection score of " + curNode.game.getName() + " changed from " + curNode.score);
+            //System.out.print("Due to difficulty score of " + curNode.game.getName() + " changed from " + curNode.score);
             curNode.score = curNode.score * ((500 - Math.abs(curNode.game.getDifficulty() - (buttonValue * 50))));
-            System.out.println(" to " + curNode.score);
+            //System.out.println(" to " + curNode.score);
         }
     }
 
