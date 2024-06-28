@@ -175,16 +175,9 @@ public class GameArray {
      * This method creates a copy of the array
      * @return New game array (opPlayerCount is bound do not change)
      */
-    public Game[] copyArray()
+    public Game[] getArray()
     {
-        Game[] newArray = new Game[games.length];
-
-        for(int i = 0; i < games.length; i++)
-        {
-            newArray[i] = new Game(games[i]);
-        }
-
-        return newArray;
+        return games;
     }
 
 }

@@ -4,6 +4,13 @@
  * @author Deniz Sahin
  */
 
+import javax.swing.JLabel;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+
+import java.io.File;
 
 public class Game {
 
@@ -69,6 +76,8 @@ public class Game {
     private int minPlayTime, maxPlayTime;
     private int difficulty, rating;
     private GameType type;
+    private JLabel gameImage;
+    
 
 
     /**
@@ -127,6 +136,52 @@ public class Game {
             System.out.println("Game type definition was wrong for " + name + ". Game type: " + gameType);
             System.exit(2);
         }
+
+        //Getting the image of the game
+        try {
+            int imageSize = App.getScreenWidth() * 3 / 10;
+
+            String gameNameStr = name;
+            gameNameStr = gameNameStr.replace(" ", "");
+
+            File imgFile = new File("resources/images/" + gameNameStr + ".jpg");
+
+            BufferedImage gameBufImg = ImageIO.read(imgFile);
+            Image gameImg;
+
+            gameImage = new JLabel();
+            int bufHeight = gameBufImg.getHeight();
+            int bufWidth = gameBufImg.getWidth();
+
+            //rescaling the image if necessary
+            if(((bufWidth < imageSize) && (bufHeight < imageSize)) // if both sizes are smaller than imageSize
+                    && ((bufWidth > imageSize - 100) || (bufHeight > imageSize - 100))) // if at least one of the sizes is greater than imageSize - 100
+            {
+                gameImg = gameBufImg;
+                gameImage.setSize(bufWidth, bufHeight);
+                System.out.println("Game not resized: " + gameName);
+            } else {
+                //Showing the image to scale
+                int imgHeight = imageSize - 50;
+                int imgWidth = -1;
+
+                gameImage.setSize(imgHeight, imgHeight);
+                if(bufWidth > bufHeight)
+                {
+                    imgWidth = imgHeight;
+                    imgHeight = -1;
+                }
+                
+                gameImg = gameBufImg.getScaledInstance(imgWidth, imgHeight, java.awt.Image.SCALE_SMOOTH); 
+            }
+
+            ImageIcon gameImgIcon = new ImageIcon(gameImg);
+            gameImage.setIcon(gameImgIcon);
+
+        } catch (Exception e) {
+            System.out.println("Image not found " + name);
+        }
+
     }
 
     /**
@@ -227,6 +282,10 @@ public class Game {
 
     public GameType getType() {
         return this.type;
+    }
+
+    public JLabel getImage() {
+        return this.gameImage;
     }
 //#endregion Getters
 
