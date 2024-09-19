@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.BorderFactory;
 
 /**
  * This is a game selector class representing a game selector object.
@@ -46,6 +47,7 @@ public class GameSelector {
     private static JTabbedPane questionPane;
     private static ButtonGroup[] answers;
     private static JButton doneButton;
+    private static JLabel bgLabel;
 
     private static Font questionFont;
     private static Font selButtFont;
@@ -57,6 +59,7 @@ public class GameSelector {
     private static Color buttonTextColor;
 
     private static int screenWidth;
+    private static int screenHeight;
 
     //#endregion Variables
 
@@ -101,8 +104,11 @@ public class GameSelector {
         questionColor = UIManager.TITLE_COLOR;
         buttonTextColor = UIManager.BUTTON_TEXT_COLOR;
 
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        screenWidth = ge.getMaximumWindowBounds().width;
+        screenWidth = App.getScreenWidth();
+        screenHeight = App.getScreenHeight();
+
+
+        bgLabel = parent.getBgImage();
         
         firstNode = createNodes();
 
@@ -245,15 +251,22 @@ public class GameSelector {
         questionLabel2.setBounds(0, 50, screenWidth, 200);
         selContainer.add(questionLabel2);
 
-        Container selButContainer = new Container();
-        selButContainer.setBounds(screenWidth / 3, 300, screenWidth / 3, 300);
+        JPanel selButContainer = new JPanel();
         selButContainer.setLayout(new GridLayout(4, 3));
+        selButContainer.setBackground(backgroundColor);
+
+        int borderThick = 5;
+        
 
         answers[curSelFrame] = new ButtonGroup();
 
         //Selection Buttons
         if(curSelFrame != 2)
         {
+            
+            selButContainer.setBounds(screenWidth / 3, 300, screenWidth / 3, 300);
+            selButContainer.setBorder(BorderFactory.createMatteBorder(borderThick, borderThick, 0, borderThick, questionColor));
+            
             for(int i = 1; i < answerCount + 1; i++)
             {
                 JRadioButton button = new JRadioButton(String.valueOf(i * answerMultiplier));
@@ -265,19 +278,28 @@ public class GameSelector {
                 selButContainer.add(button);
             }
 
+            JPanel dNMButtonPanel = new JPanel();
+            dNMButtonPanel.setBounds(screenWidth / 3, 600, screenWidth / 3, 75);
+            dNMButtonPanel.setBorder(BorderFactory.createMatteBorder(0, borderThick, borderThick, borderThick, questionColor));
+            dNMButtonPanel.setBackground(backgroundColor);
+
             JRadioButton dNMButton = new JRadioButton("Does Not Matter");
             dNMButton.setActionCommand("DNM");
             dNMButton.setFont(selButtFont);
             dNMButton.setBackground(backgroundColor);
             dNMButton.setForeground(questionColor);
-            dNMButton.setBounds(screenWidth / 3, 600, screenWidth / 3, 75);
+            //dNMButton.setBounds(screenWidth / 3, 600, screenWidth / 3, 75);
             answers[curSelFrame].add(dNMButton);
-            selContainer.add(dNMButton);
+            dNMButtonPanel.add(dNMButton);
+            selContainer.add(dNMButtonPanel);
 
             // auto selects dnm
             answers[curSelFrame].setSelected(dNMButton.getModel(), true);
 
         } else {
+            
+            selButContainer.setBounds(screenWidth / 3, 300, screenWidth / 3, 80);
+            selButContainer.setBorder(BorderFactory.createLineBorder( questionColor, borderThick));
             selButContainer.setLayout(new FlowLayout());
 
             JRadioButton button = null;
@@ -334,8 +356,10 @@ public class GameSelector {
             prevPageButton.setForeground(buttonTextColor);
             selContainer.add(prevPageButton);
         }
-        
 
+        JLabel background = new JLabel(bgLabel.getIcon());
+        background.setBounds(0, 0, screenWidth, screenHeight);
+        selContainer.add(background);
         questionPanel.add(selContainer);
 
         curSelFrame++;

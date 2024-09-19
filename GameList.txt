@@ -1,55 +1,54 @@
-7 Wonders	1	2	7	No	4-5	30	2.32	7.7	Strategy
-Alchemistry	1	1	4	No	4	15-60	2.25	6.9	Strategy
-Alhambra	1	2	6	No	3	45-60	2.1	7	Strategy
-Architects	1	1	5	No	4	60-80	2.75	7.7	Strategy
-Arctic Scavangers	1	1	5	No	4	45-60	2.26	6.8	Strategy
-Bang	2	4	7	No	7	20-40	1.63	6.5	Party
-Betrayal	1	3	6	No	5	60-90	2.32	7.4	Both
-Biblios	1	2	4	No	3	30	1.68	7.2	Strategy
-Bil Bakalim Kim	1	2	2	Yes	2	15	1.1	4.8	Party
-Carcassone	1	2	5	No	2	30-45	1.89	7.4	Strategy
-Cascadia	1	1	4	No	2-3	30-45	1.85	8	Strategy
-Cash'n Guns	1	4	8	No	6-8	30	1.25	6.8	Party
-Catan	1	3	4	No	4	75	2.29	7.1	Strategy
-Ciziver	1	4	8	No	6	15	1.07	7.4	Party
-Clank!	1	2	4	No	3	30-60	2.23	7.8	Strategy
-Codenames	1	2	8	Yes	6,8	15	1.26	7.5	Party
-Concept	1	4	12	No	6	40	1.37	6.8	Party
-Dice Throne	2	2	4	No	2	30	2.15	7.7	Strategy
-Direnis	1	5	10	No	7	30	1.59	7.2	Party
-Dixit	1	3	6	No	5-6	30	1.2	7.2	Party
-Entrika	1	2	6	No	5	15	1.41	7	Party
-Entrika Plus	1	2	6	No	6	15	1.6	7.3	Party
-Epik Buyu Savaslari	1	2	8	No	4	30	1.57	6.5	Both
-Five Tribes	1	2	4	No	2	40-80	2.85	7.8	Strategy
-Ihtilal	1	2	4	Yes	2	90	2.63	7.4	Strategy
-Isle of Skye	1	2	5	No	3-4	60	2.26	7.4	Strategy
-Jungle Speed	1	2	10	No	5-6	15	1.13	6.5	Party
-Kayip Diyarlar	1	2	4	No	4	8-20	1.97	6.9	Strategy
-King of Tokyo	1	2	6	No	4-5	30	1.49	7.1	Both
-Kingdomino	1	2	4	No	2,4	15	1.22	7.3	Strategy
-Lanterns	1	2	4	No	4	30	1.55	6.9	Strategy
-Lords of Waterdeep	1	2	5	No	3-4	45-90	2.45	7.7	Strategy
-Machi Koro	1	2	4	No	4	30	1.53	6.6	Strategy
-Monopoly Deal	1	2	5	No	4	15	1.32	6.3	Both
-Munchkin	1	3	6	No	4	60-120	1.81	5.9	Both
-Munchkin Cthulhu	1	3	6	No	4-5	90	1.72	6.2	Both
-Otokrat	1	2	4	No	3	30	1.97	7	Strategy
-Pandemic	1	2	4	No	4	45	2.4	7.5	Strategy
-Patika	1	1	8	No	2,4	15	1.41	6.8	Strategy
-Power Grid Deluxe	1	2	6	No	4-5	120	3.19	7.9	Strategy
-Risk	1	2	6	No	4	90	2.07	5.6	Strategy
-Samurai Spirit	1	1	7	No	1	30	2.13	6.6	Strategy
-Secret Hitler	2	5	10	No	8,10	20	1.74	7.5	Party
-Splendor	1	2	4	No	3	30	1.78	7.4	Strategy
-Spyfall	1	4	8	No	6	15	1.24	6.8	Party
-Star Flux	1	2	6	No	4	10-40	1.42	6.3	Party
-Sushi Go	1	2	5	No	4	10	1.16	7	Both
-Tabu	1	4	10	Yes	6,8	10-60	1.2	6.3	Party
-Telestrations	1	4	12	No	8	15	1.07	7.4	Party
-Ticket to Ride	1	2	5	No	4	30-60	1.92	7.5	Strategy
-Troyes	1	2	4	No	3	90	3.46	7.7	Strategy
-Truva	1	2	2	Yes	2	30	1.89	7.4	Strategy
-Uno	1	2	10	No	4-6	10	1.1	5.5	Party
-Viticulture	1	1	6	No	3-4	45-90	2.89	8	Strategy
-Yamali Yorgan	1	2	2	Yes	2	20	1.6	7.6	Strategy
+7 Wonders	1	2	7	No	4-5	30	2.32	7.7	Strategy	City Building / Closed Drafting	Draft cards to develop your ancient civilization and build its Wonder of the World.
+Alchemistry	1	1	4	No	4	15-60	2.25	6.9	Strategy	-	-
+Alhambra	1	2	6	No	3	45-60	2.1	7	Strategy	-	Compete to build the most valuable picturesque walled city in 13th-century Granada.
+Architects	1	1	5	No	4	60-80	2.75	7.7	Strategy	City Building / Worker Placement	Will you be a virtuous or nefarious servant of the king? Build your way to glory.
+Arctic Scavangers	1	1	5	No	4	45-60	2.26	6.8	Strategy	Deck Building	Fight, gamble and bluff to win this desperate struggle for diminishing resources.
+Bang	2	4	7	No	7	20-40	1.63	6.5	Party	Bluffing / Hand Management	Be the last one standing in this wild west shootout game with hidden roles.
+Betrayal	1	3	6	No	5	60-90	2.32	7.4	Both	Adventure / Dice Rolling	Explore a haunted house as a team ... until one of you turns against the rest.
+Biblios	1	2	4	No	3	30	1.68	7.2	Strategy	Auction / Hand Management	Amass the greatest library of sacred texts, using your wits and meager gold supply.
+Bil Bakalim Kim	1	2	2	Yes	2	15	1.1	4.8	Party	Deduction / Children's Game	Find your opponent's character by narrowing down what his or her features are.
+Carcassonne	1	2	5	No	2	30-45	1.89	7.4	Strategy	Tile Placement / Area Majority	Shape the medieval landscape of France, claiming cities, monasteries and farms.
+Cascadia	1	1	4	No	2-3	30-45	1.85	8	Strategy	Tile Placement / Pattern Building	Create the most harmonious ecosystem as you puzzle together habitats and wildlife.
+Cash'n Guns	1	4	8	No	6-8	30	1.25	6.8	Party	Bluffing / Open Drafting	A band of gangsters splits its loot — but guns speak louder than money.
+Catan	1	3	4	No	4	75	2.29	7.1	Strategy	Dice Rolling / Negotiation	Collect and trade resources to build up the island of Catan in this modern classic.
+Clank!	1	2	4	No	3	30-60	2.23	7.8	Strategy	Deck Building / Point to Point Movement	Claim your treasures but don't attract the dragon in this deck-building dungeon race.
+Codenames	1	2	8	Yes	6,8	15	1.26	7.5	Party	Deduction / Word Game	Give your team clever one-word clues to help them spot their agents in the field.
+Concept	1	4	12	No	6	40	1.37	6.8	Party	Deduction / Word Game	Select icons to help your team guess a secret word or phrase.
+Dice Throne	2	2	4	No	2	30	2.15	7.7	Strategy	Dice Rolling / Fighting	Heroes compete in an age old tournament.
+Direnis	1	5	10	No	7	30	1.59	7.2	Party	-	Assign operatives to missions while avoiding enemy spies.
+Dixit	1	3	6	No	5-6	30	1.2	7.2	Party	Deduction / Voting	Give the perfect clue so most (not all) players guess the right surreal image card.
+Entrika	1	2	6	No	5	15	1.41	7	Party	Bluffing / Political	Bluff (and call bluffs!) to victory in this card game with no third chances.
+Entrika Plus	1	2	6	No	6	15	1.6	7.3	Party	Bluffing / Political	Bluff (and call bluffs!) to victory in this card game with no third chances.
+Epik Buyu Savaslari	1	2	8	No	4	30	1.57	6.5	Both	Dice Rolling / Fighting / Hand Management	Fling crazily named and overpowered spells around to be the Last Wizard Standing.
+Five Tribes	1	2	4	No	2	40-80	2.85	7.8	Strategy	-	Move assassins, elders & builders through Naqala to claim oases & control djinns.
+Ihtilal	1	2	4	Yes	2	90	2.63	7.4	Strategy	-	-
+Isle of Skye	1	2	5	No	3-4	60	2.26	7.4	Strategy	Territory Building / Economic	Build your kingdom as Chieftain one tile at a time and rule all of Scotland!
+Jungle Speed	1	2	10	No	5-6	15	1.13	6.5	Party	Real-time / Pattern Recognition	Flip a card, watch like an eagle for a match, and be the fastest to grab the totem.
+Kayip Diyarlar	1	2	4	No	4	8-20	1.97	6.9	Strategy	Open Drafting / Area Majority	Build a legendary empire that eclipses your rivals in just 8 minutes or more!?
+King of Tokyo	1	2	6	No	4-5	30	1.49	7.1	Both	Dice Rolling / King of the Hill	Prove your dominance by destroying Tokyo or by being the last monster left standing.
+Kingdomino	1	2	4	No	2,4	15	1.22	7.3	Strategy	Tile Placement / Open Drafting	Build a kingdom with varied terrains on domino-shaped tiles in this fast family game.
+Lanterns	1	2	4	No	4	30	1.55	6.9	Strategy	Pattern Building / Tile Placement	Decorate the lake with floating lanterns and dedicate your cards to gain honour!
+Lords of Waterdeep	1	2	5	No	3-4	45-90	2.45	7.7	Strategy	Contracts / Worker Placement	Deploy agents and hire adventurers to expand your control over the city of Waterdeep.
+Machi Koro	1	2	4	No	4	30	1.53	6.6	Strategy	Dice Rolling / City Building	As a newly elected mayor, develop a city and populate it with impressive landmarks.
+Monopoly Deal	1	2	5	No	4	15	1.32	6.3	Both	Hand Management / Set Collection	Can you collect three sets of properties before your fortune runs out?
+Munchkin	1	3	6	No	4	60-120	1.81	5.9	Both	-	Attack and loot in this humorous, card-based dungeon crawler.
+Munchkin Cthulhu	1	3	6	No	4-5	90	1.72	6.2	Both	-	Attack and loot in this humorous, card-based mind bender from beyond.
+Otokrat	1	2	4	No	3	30	1.97	7	Strategy	Bluffing / Hand Management	Assign Citizens to your Hometown or the Capital in this futuristic tactical card game
+Pandemic	1	2	4	No	4	45	2.4	7.5	Strategy	Cooperative / Hand Management	Your team of experts must prevent the world from succumbing to a viral pandemic.
+Patika	1	1	8	No	2,4	15	1.41	6.8	Strategy	Network Building / Line Drawing	Connect vineyards and vines by flipping cards, showing you which roads to draw.
+Power Grid Deluxe	1	2	6	No	4-5	120	3.19	7.9	Strategy	-	Manage resources, build networks and supply the most cities with power.
+Risk	1	2	6	No	4	90	2.07	5.6	Strategy	Area Movement / Dice Rolling	Will you conquer the world in this multi-player push-your-luck wargame?
+Samurai Spirit	1	1	7	No	1	30	2.13	6.6	Strategy	Cooperative / Drafting	Stand together as honorable samurai to defend a village against a horde of bandits.
+Secret Hitler	2	5	10	No	8,10	20	1.74	7.5	Party	Bluffing / Political	In pre-WW2 Germany, Liberals and Fascists square off in an intrigue-filled parliament
+Splendor	1	2	4	No	3	30	1.78	7.4	Strategy	Set Collection / Open Drafting	Renaissance merchants race to grab gems, acquire property, and please nobility.
+Spyfall	1	4	8	No	6	15	1.24	6.8	Party	Deduction / Communication Limits	Players ask each other probing questions to detect the Spy.
+Star Fluxx	1	2	6	No	4	10-40	1.42	6.3	Party	Set Collection	Play cards and alter the rules in this ever changing sci-fi themed card game!
+Sushi Go	1	2	5	No	4	10	1.16	7	Both	Closed Drafting / Set Collection	Pass the sushi around, but keep the best for yourself. Save room for dessert!
+Tabu	1	4	10	Yes	6,8	10-60	1.2	6.3	Party	Word Game / Real-time	Get your team to guess the target but you can't use the most obvious clues.
+Telestrations	1	4	12	No	8	15	1.07	7.4	Party	Drawing / Telephone Game	Guess what they drew, then draw what they guessed, and see how funny the changes get.
+Ticket to Ride	1	2	5	No	4	30-60	1.92	7.5	Strategy	Network Building / Hand Management	Build train routes across Europe in this sequel to the hit family board game.
+Troyes	1	2	4	No	3	90	3.46	7.7	Strategy	-	Defend the city and rise to power by influencing the merchants, knights and clergy.
+Truva	1	2	2	Yes	2	30	1.89	7.4	Strategy	Hand Management / Set Collection	Mobilize stronger formations to counter the enemy along an ever-changing battle-line.
+Uno	1	2	10	No	4-6	10	1.1	5.5	Party	Children's Game / Hand Management	Get rid of your cards first, but don't forget to say "UNO!"
+Viticulture	1	1	6	No	3-4	45-90	2.89	8	Strategy	Contracts / Worker Placement	Create the most prosperous winery in Italy from the Tuscan vineyard you've inherited.
+Yamali Yorgan	1	2	2	Yes	2	20	1.6	7.6	Strategy	Grid Coverage / Economic	Piece together a quilt and leave no holes to become the button master.
