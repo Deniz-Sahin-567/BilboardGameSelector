@@ -76,6 +76,7 @@ public class Game {
     private int minPlayTime, maxPlayTime;
     private int difficulty, rating;
     private GameType type;
+    private String[] subtype;
     private JLabel gameImage;
     
 
@@ -93,12 +94,13 @@ public class Game {
      * @param gameDifficulty The difficulty rating of the game out of 5 (BGG)
      * @param gameRating The rating of the game out of 10 (BGG)
      * @param gameType The type of the game: Strategy, Party or Both
+     * @param gameSubtype The more specific subtype of the game
      */
     public Game (String gameName,
                 int gameCount, int gameMinPlayerCount, int gameMaxPlayerCount, boolean gameEvenPlayerCount,
                 int[] gameOpPlayerCount, int gameMinPlayTime, int gameMaxPlayTime,
                 int gameDifficulty, int gameRating,
-                String gameType)
+                String gameType, String[] gameSubtype)
     {
         name = gameName;
         count = gameCount;
@@ -108,6 +110,7 @@ public class Game {
         opPlayerCount = gameOpPlayerCount;
         minPlayTime = gameMinPlayTime;
         maxPlayTime = gameMaxPlayTime;
+        subtype = gameSubtype;
 
         if(gameDifficulty < 100 || gameDifficulty > 500)
         {
@@ -159,7 +162,7 @@ public class Game {
             {
                 gameImg = gameBufImg;
                 gameImage.setSize(bufWidth, bufHeight);
-                System.out.println("Game not resized: " + gameName);
+                //System.out.println("Game not resized: " + gameName);
             } else {
                 //Showing the image to scale
                 int imgHeight = imageSize - 50;
@@ -171,6 +174,7 @@ public class Game {
                     imgWidth = imgHeight;
                     imgHeight = -1;
                 }
+                System.out.println("Image resized" + gameName);
                 
                 gameImg = gameBufImg.getScaledInstance(imgWidth, imgHeight, java.awt.Image.SCALE_SMOOTH); 
             }
@@ -201,6 +205,7 @@ public class Game {
         difficulty = copied.difficulty;
         rating = copied.rating;
         type = copied.type;
+        subtype = copied.subtype;
     }
 
 
@@ -252,14 +257,14 @@ public class Game {
      * @return Formatted stirng of opPlayerCount
      */
     public String getOpPlayerCountStr() {
-        String str = "[ " + String.valueOf(opPlayerCount[0]);
+        String str = "" + String.valueOf(opPlayerCount[0]);
         
         for (int i = 1; i < opPlayerCount.length; i++)
         {
             str += (", " + opPlayerCount[i]);
         }
 
-        str +=  "]";
+        str +=  "";
 
         return str;
     }
@@ -286,6 +291,16 @@ public class Game {
 
     public JLabel getImage() {
         return this.gameImage;
+    }
+
+    public String getSubtype() {
+        String subTypeString = "";
+        for(String str: subtype)
+        {
+            subTypeString += str + "/ ";
+        }
+        subTypeString = subTypeString.substring(0, subTypeString.length() - 2);
+        return subTypeString;
     }
 //#endregion Getters
 

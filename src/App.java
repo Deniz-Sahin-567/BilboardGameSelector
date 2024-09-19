@@ -14,7 +14,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        screenHeight = ge.getMaximumWindowBounds().height;
+        screenHeight = ge.getMaximumWindowBounds().height + 48;
         screenWidth = ge.getMaximumWindowBounds().width;
 
         GameArray ga = new GameArray("GameList.txt");

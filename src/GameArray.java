@@ -138,9 +138,21 @@ public class GameArray {
                 rating = rating * 10;
             }
 
+            String[] gameSubType = {partsOfGame[10]};
+            if(partsOfGame[10].contains("/"))
+            {
+                String[] typeStrings = partsOfGame[10].split("/");
+
+                gameSubType = new String[typeStrings.length];
+                for(int j = 0; j < gameSubType.length; j++)
+                {
+                    gameSubType[j] = typeStrings[j].strip();
+                }
+            }
+
             this.games[i] = new Game(partsOfGame[0], Integer.parseInt(partsOfGame[1]), Integer.parseInt(partsOfGame[2]), Integer.parseInt(partsOfGame[3]), 
                                         evenPlayer, opPlayerCount, minTime, maxTime,
-                                        difficulty, rating, partsOfGame[9]);
+                                        difficulty, rating, partsOfGame[9], gameSubType);
         }
 
         //#endregion Game Creation By String Manipulation
