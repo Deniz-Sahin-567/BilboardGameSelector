@@ -869,11 +869,23 @@ public class UIManager {
         typeLabel.setBounds(0, (gameNameHeight), gameNameWidth - 10, gameNameHeight);
         gameVarContainer.add(typeLabel);
 
-        JLabel subTypeLabel = new JLabel("Subtype: " + curGame.getSubtype());
+        String subtype1Text = "Subtypes: " + curGame.getSubtype(0);
+        //subtype1Text += (curGame.getSubtype(1) == "" ? "" : "/" );
+
+        JLabel subTypeLabel = new JLabel(subtype1Text);
         subTypeLabel.setFont(TO_START_FONT);
         subTypeLabel.setForeground(GAME_FONT_COLOR);
         subTypeLabel.setBounds( 15, (gameNameHeight * 3 / 2), gameNameWidth - 10, gameNameHeight);
         gameVarContainer.add(subTypeLabel);
+
+        String subtype2Text = curGame.getSubtype(1);
+        //subtype2Text += ((curGame.getSubtype(2) == "" ? "" : "/ " + curGame.getSubtype(2) ));
+
+        JLabel subTypeLabel2 = new JLabel(subtype2Text);
+        subTypeLabel2.setFont(TO_START_FONT);
+        subTypeLabel2.setForeground(GAME_FONT_COLOR);
+        subTypeLabel2.setBounds( 148, (gameNameHeight * 3 / 2) + 25, gameNameWidth - 10, gameNameHeight);
+        gameVarContainer.add(subTypeLabel2);
         
         String plCntString = "Player Count: ";
         plCntString += (curGame.getMaxPlayerCount() == curGame.getMinPlayerCount()) ? curGame.getMinPlayerCount() 
@@ -900,13 +912,13 @@ public class UIManager {
         JLabel playTimeLabel = new JLabel(timeString);
         playTimeLabel.setFont(GAME_INFO_FONT);
         playTimeLabel.setForeground(GAME_FONT_COLOR);
-        playTimeLabel.setBounds(0, ((gameNameHeight+5) * 2), gameNameWidth, gameNameHeight);
+        playTimeLabel.setBounds(0, ((gameNameHeight+15) * 2), gameNameWidth, gameNameHeight);
         gameVarContainer.add(playTimeLabel);
 
         JLabel difficultyLabel = new JLabel("Difficulty: " + curGame.getDifficulty() / 100 + "." + curGame.getDifficulty() % 100 + " / 5");
         difficultyLabel.setFont(GAME_INFO_FONT);
         difficultyLabel.setForeground(GAME_FONT_COLOR);
-        difficultyLabel.setBounds(gameNameWidth, ((gameNameHeight+5) * 2), gameNameWidth, gameNameHeight);
+        difficultyLabel.setBounds(gameNameWidth, ((gameNameHeight+15) * 2), gameNameWidth, gameNameHeight);
         gameVarContainer.add(difficultyLabel);
         
         innerGameContainer.add(gameVarContainer);

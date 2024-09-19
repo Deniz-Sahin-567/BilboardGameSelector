@@ -293,14 +293,13 @@ public class Game {
         return this.gameImage;
     }
 
-    public String getSubtype() {
-        String subTypeString = "";
-        for(String str: subtype)
+    public String getSubtype(int no) {
+        if(subtype.length <= no)
         {
-            subTypeString += str + "/ ";
+            return "";
         }
-        subTypeString = subTypeString.substring(0, subTypeString.length() - 2);
-        return subTypeString;
+        
+        return subtype[no];
     }
 //#endregion Getters
 
