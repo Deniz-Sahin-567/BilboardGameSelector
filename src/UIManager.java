@@ -14,9 +14,11 @@ import java.awt.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextPane;
 import javax.swing.JPanel;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
@@ -823,7 +825,7 @@ public class UIManager {
      
         JPanel gameListContainer = new JPanel();
         gameListContainer.setLayout(null);
-        gameListContainer.setBackground(new Color(0, true));
+        gameListContainer.setOpaque(false);
         gameListContainer.setBorder(BorderFactory.createLineBorder(GAME_FONT_COLOR, 6));
         gameListContainer.setBounds(leftBorder * 3, 145, screenWidth - (leftBorder * 6) , gameNameWidth + 80);
 
@@ -852,10 +854,20 @@ public class UIManager {
             innerGameContainer.add(imageDisplay);
         }
 
+        JTextPane descLabel = new JTextPane();
+        descLabel.setText(curGame.getDescription());
+        descLabel.setFont(new Font(TITLE_FONT.getFontName(), 2, 30));
+        descLabel.setEditable(false);
+        descLabel.setForeground(GAME_FONT_COLOR);
+        descLabel.setBounds((int) (gameNameWidth * 1.2), 40, (int) (gameNameWidth * 1.4), (int) (gameNameHeight * 2.5));
+        descLabel.setOpaque(false);
+
+        innerGameContainer.add(descLabel);
+
         //Game Variables
         Container gameVarContainer = new Container();
         //JPanel gameVarContainer = new JPanel();
-        gameVarContainer.setBounds( gameNameWidth, 0, gameNameWidth * 2, 500);
+        gameVarContainer.setBounds( gameNameWidth, gameNameHeight * 2, gameNameWidth * 2, 500);
 
         JLabel ratingLabel = new JLabel("Rating: " + curGame.getRating() + " / 100");
         ratingLabel.setFont(GAME_INFO_FONT);
@@ -915,7 +927,11 @@ public class UIManager {
         playTimeLabel.setBounds(0, ((gameNameHeight+15) * 2), gameNameWidth, gameNameHeight);
         gameVarContainer.add(playTimeLabel);
 
-        JLabel difficultyLabel = new JLabel("Difficulty: " + curGame.getDifficulty() / 100 + "." + curGame.getDifficulty() % 100 + " / 5");
+        String diffString = "Difficulty: " + curGame.getDifficulty() / 100 + ".";
+        diffString += ((curGame.getDifficulty() % 100) < 10) ? "0" : "";
+        diffString += curGame.getDifficulty() % 100 + " / 5";
+
+        JLabel difficultyLabel = new JLabel(diffString);
         difficultyLabel.setFont(GAME_INFO_FONT);
         difficultyLabel.setForeground(GAME_FONT_COLOR);
         difficultyLabel.setBounds(gameNameWidth, ((gameNameHeight+15) * 2), gameNameWidth, gameNameHeight);

@@ -77,6 +77,7 @@ public class Game {
     private int difficulty, rating;
     private GameType type;
     private String[] subtype;
+    private String description;
     private JLabel gameImage;
     
 
@@ -100,7 +101,7 @@ public class Game {
                 int gameCount, int gameMinPlayerCount, int gameMaxPlayerCount, boolean gameEvenPlayerCount,
                 int[] gameOpPlayerCount, int gameMinPlayTime, int gameMaxPlayTime,
                 int gameDifficulty, int gameRating,
-                String gameType, String[] gameSubtype)
+                String gameType, String[] gameSubtype, String gameDescription)
     {
         name = gameName;
         count = gameCount;
@@ -139,6 +140,11 @@ public class Game {
             System.out.println("Game type definition was wrong for " + name + ". Game type: " + gameType);
             System.exit(2);
         }
+
+        //Game Description
+        description = "\"";
+        description += gameDescription;
+        description += "\"";
 
         //Getting the image of the game
         try {
@@ -191,7 +197,7 @@ public class Game {
     /**
      * Copy constructor for game class.
      * @param copied The game being coppied (opPlayerCount is bound do not change)
-     */
+     
     public Game (Game copied)
     {
         name = copied.name;
@@ -207,7 +213,7 @@ public class Game {
         type = copied.type;
         subtype = copied.subtype;
     }
-
+    */
 
 
     public String toString() {
@@ -300,6 +306,10 @@ public class Game {
         }
         
         return subtype[no];
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 //#endregion Getters
 

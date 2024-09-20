@@ -152,7 +152,7 @@ public class GameArray {
 
             this.games[i] = new Game(partsOfGame[0], Integer.parseInt(partsOfGame[1]), Integer.parseInt(partsOfGame[2]), Integer.parseInt(partsOfGame[3]), 
                                         evenPlayer, opPlayerCount, minTime, maxTime,
-                                        difficulty, rating, partsOfGame[9], gameSubType);
+                                        difficulty, rating, partsOfGame[9], gameSubType, partsOfGame[11]);
         }
 
         //#endregion Game Creation By String Manipulation
