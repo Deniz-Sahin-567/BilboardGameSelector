@@ -5,16 +5,25 @@
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.ImageIcon;
+
+import java.io.File;
 
 public class UIManager {
 
@@ -25,16 +34,29 @@ public class UIManager {
     private static int screenHeight;
 
     //defining private variables
-    private static JFrame startFrame;
     private static JFrame gameViewFrame;
+    private static Container startContainer;
     public static listTimerListener timerAction;
     private static boolean selectionBeingMade;
+    private static boolean singleGameView;
+    private static int randomizedGame;
+    private static int gamesInList;
+    private static ImageIcon[] bgImage;
 
     //Fonts
     public final static Font TITLE_FONT = new Font("Cooper Black", 1, 90); //Britannic Bold, Cooper Black
-    public final static Font GAME_FONT = new Font(TITLE_FONT.getFontName(), 1, 40);
+    public final static Font GAME_FONT = new Font(TITLE_FONT.getFontName(), 1, 38);
     public final static Font TO_START_FONT = new Font(TITLE_FONT.getFontName(), 0, 25);
     public final static Font SMALLER_GAME_FONT = new Font(GAME_FONT.getFontName(), 0, 20);
+    private final static Font GAME_INFO_FONT = new Font(GAME_FONT.getFontName(), 1, 45);
+
+    /*
+     * Color information: 
+     * Default Pink: d16d8b, Purple: 38225b, Elif Bugday selected pink: e3acbc
+     * Generation 1: ee9d7c, e1d59c, 466382 Too orange
+     * Generation 2: f2bda7, d69fa3, 395b89
+     * 
+     */
 
     public final static Color BUTTON_COLOR = new Color(0x38225b);
     public final static Color BACKGROUND_COLOR = new Color(0xe3acbc);
@@ -46,6 +68,8 @@ public class UIManager {
     private static GameArray ga;
     private static Game[] curGames;
     private static int timerDelay;
+    private static int curBg;
+    private static int bgCount;
 
 
     //#endregion Variables
@@ -53,13 +77,7 @@ public class UIManager {
     UIManager(GameArray gameArray)
     {
         ga = gameArray;
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
-        /*for(String str : ge.getAvailableFontFamilyNames())
-        {
-            System.out.println(str);
-        }*/
-
         gameViewFrame = null;
 
         timerDelay = 10;
@@ -67,12 +85,24 @@ public class UIManager {
         new Timer(timerDelay * 1000, timerAction).start();
 
         selectionBeingMade = false;
+        singleGameView = false;
+        randomizedGame = -1;
+        gamesInList = 15;
 
-        screenHeight = ge.getMaximumWindowBounds().height;
-        screenWidth = ge.getMaximumWindowBounds().width;
+        bgCount = 3;
+
+        screenHeight = App.getScreenHeight();
+        screenWidth = App.getScreenWidth();
+
+        System.out.println("Screen height is: " + screenHeight + " and screen width is: " + screenWidth);
+
+        initialLoads();
+
 
         createStartFrame();
     }
+
+    //#region Frame Creation
 
     /**
      * Creates the starting frame for the selector.
@@ -80,86 +110,69 @@ public class UIManager {
     public void createStartFrame()
     {
         //starting frame
-        startFrame = new JFrame();
+        JFrame startFrame = new JFrame();
         startFrame.setTitle("Bilboard Game Selector");
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startFrame.setUndecorated(true);
         startFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         startFrame.getContentPane().setBackground(BACKGROUND_COLOR);
+        
 
-        Container startSelBtContainer = new Container();
+        startContainer = new Container();
 
         int leftBorder = screenWidth * 57 / 1000;
 
-        JLabel titleLabel = new JLabel("Bilboard Game Selector v1.1", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Bilboard Game Selector v2.0", SwingConstants.CENTER);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TITLE_COLOR);
         titleLabel.setBounds(0, 0, screenWidth, 200);
-        startSelBtContainer.add(titleLabel);
+        startContainer.add(titleLabel);
 
-        Font selButtFont = new Font(GAME_FONT.getFontName(), 1, 25);
+        Font selButtFont = new Font(GAME_FONT.getFontName(), 1, 40);
         int selButtWidth = screenWidth * 42 / 100;
         int selButtHeight = screenHeight * 27 / 100;
 
         // Algorithm selection start button
-        JButton prefSelButton = new JButton("Find a Game");
-        prefSelButton.setBackground(BUTTON_COLOR);
-        prefSelButton.setForeground(BUTTON_TEXT_COLOR);
+        JButton prefSelButton = createButton("Find a Game", new prefSelListener(), selButtFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
         prefSelButton.setBounds(leftBorder, 220, selButtWidth, selButtHeight);
-        prefSelButton.addActionListener(new prefSelListener());
-        prefSelButton.setFont(selButtFont);
-        startSelBtContainer.add(prefSelButton);
+        startContainer.add(prefSelButton);
 
         // Random game button
-        JButton randGameButton = new JButton("Random Game List");
-        randGameButton.setBackground(BUTTON_COLOR);
-        randGameButton.setForeground(BUTTON_TEXT_COLOR);
-        randGameButton.addActionListener(new randGameListener());
+        JButton randGameButton = createButton("A Random Game", new randGameListener(), selButtFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
         randGameButton.setBounds(screenWidth - selButtWidth - leftBorder, 220, selButtWidth, selButtHeight);
-        randGameButton.setFont(selButtFont);
-        startSelBtContainer.add(randGameButton);
+        startContainer.add(randGameButton);
 
         // Entire game list button
-        JButton gameListButton = new JButton("See Entire Game List");
-        gameListButton.setBackground(BUTTON_COLOR);
-        gameListButton.setForeground(BUTTON_TEXT_COLOR);
-        gameListButton.addActionListener(new gameListListener());
+        JButton gameListButton = createButton("See Entire Game List", new gameListListener(), selButtFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
         gameListButton.setBounds(leftBorder, 290 + selButtHeight, selButtWidth, selButtHeight);
-        gameListButton.setFont(selButtFont);
-        startSelBtContainer.add(gameListButton);
+        startContainer.add(gameListButton);
         
         // How to use button
-        JButton howToButton = new JButton("How To Use?");
-        howToButton.setBackground(BUTTON_COLOR);
-        howToButton.setForeground(BUTTON_TEXT_COLOR);
-        howToButton.addActionListener(new howToListener());
+        JButton howToButton = createButton("How to Use?", new howToListener(), selButtFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
         howToButton.setBounds(screenWidth - selButtWidth - leftBorder,  290 + selButtHeight, selButtWidth, selButtHeight);
-        howToButton.setFont(selButtFont);
-        startSelBtContainer.add(howToButton);
+        startContainer.add(howToButton);
 
         // Go back to game view button
-        JButton goBackButton = new JButton("<-- Go Back");
-        goBackButton.setBackground(BUTTON_COLOR);
-        goBackButton.setForeground(BUTTON_TEXT_COLOR);
-        goBackButton.setFont(TO_START_FONT);
-        goBackButton.addActionListener(new goBackListener());
+        JButton goBackButton = createButton("<-- Go Back", new goBackListener(), TO_START_FONT, BUTTON_COLOR, BUTTON_TEXT_COLOR);
         goBackButton.setBounds(leftBorder, 340 + (2 * selButtHeight), 190, 30);
-        startSelBtContainer.add(goBackButton);
+        startContainer.add(goBackButton);
 
         // Source code labels
         JLabel sourceLabel = new JLabel("Source code for this project is available at:", SwingConstants.RIGHT);
         sourceLabel.setFont(SMALLER_GAME_FONT);
         sourceLabel.setForeground(TITLE_COLOR);
         sourceLabel.setBounds(screenWidth - leftBorder - 600, 340 + (2 * selButtHeight), 600, 40);
-        startSelBtContainer.add(sourceLabel);
+        startContainer.add(sourceLabel);
 
         JLabel repoLabel = new JLabel("github.com/Deniz-Sahin-567/BilboardGameSelector", SwingConstants.RIGHT);
         repoLabel.setFont(SMALLER_GAME_FONT);
         repoLabel.setForeground(TITLE_COLOR);
-        repoLabel.setBounds(screenWidth - leftBorder - 600, 380 + (2 * selButtHeight), 600, 40);
-        startSelBtContainer.add(repoLabel);
+        repoLabel.setBounds(screenWidth - leftBorder - 600, 380 + (2 * selButtHeight), 600, 40); 
+        startContainer.add(repoLabel);
+
+        startContainer.add(getBgImage());
         
-        startFrame.add(startSelBtContainer);
+        startFrame.add(startContainer);
 
         startFrame.setVisible(true);
 
@@ -189,19 +202,21 @@ public class UIManager {
      */
     private void createGameListFrame()
     {
-        curGames = ga.copyArray();
+        randomizedGame = -1;
+        singleGameView = false;
+        curGames = ga.getArray();
 
         initializeGameViewFrame();
 
         Container mainContainer = new Container();
-
+        
         JLabel titleLabel = new JLabel("Our Full Game List", SwingConstants.CENTER);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TITLE_COLOR);
-        titleLabel.setBounds(0, 0, 1600, 200);
+        titleLabel.setBounds(0, 0, screenWidth, 160);
         mainContainer.add(titleLabel);
 
-        createGameViewObjects(mainContainer);
+        mainContainer.add(createGameViewObjects());
         
         gameViewFrame.add(mainContainer);
 
@@ -215,12 +230,15 @@ public class UIManager {
      */
     private void createRandomGameFrame()
     {
+        singleGameView = true;
+        randomizedGame = 0;
+        int gameCount = ga.getGameAmount();
         //Randomizing the array
         curGames = new Game[15];
 
         Random rand = new Random();
-        boolean[] alrSellected = new boolean[ga.getGameAmount()];
-        for(int i = 0; i < 15; i++)
+        boolean[] alrSellected = new boolean[gameCount];
+        for(int i = 0; i < gameCount; i++)
         {
             alrSellected[i] = false;
         }
@@ -241,17 +259,16 @@ public class UIManager {
 
         Container mainContainer = new Container();
 
-        JLabel titleLabel = new JLabel("A List Of Random Games", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("A Random Game", SwingConstants.CENTER);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TITLE_COLOR);
-        titleLabel.setBounds(0, 0, screenWidth, 200);
+        titleLabel.setBounds(0, 0, screenWidth, 160);
         mainContainer.add(titleLabel);
 
-        createGameViewObjects(mainContainer);
+        mainContainer.add(createGameViewObjects());
         
         gameViewFrame.add(mainContainer);
 
-        //gs[0].setFullScreenWindow(startFrame);
         gameViewFrame.setVisible(true);
 
 
@@ -351,29 +368,32 @@ public class UIManager {
         backToStartButton.setForeground(BUTTON_TEXT_COLOR);
         mainContainer.add(backToStartButton);
 
+        mainContainer.add(getBgImage());
+
         gameViewFrame.add(mainContainer);
 
-        //gs[0].setFullScreenWindow(startFrame);
         gameViewFrame.setVisible(true);
     }
+
+    //#endregion Frame Creation
 
     //#region Listeners
 
     /**
      * This is an inner class.
-     * Change Listener class for changing pages.
+     * Change Page Listener class for changing pages.
      * This class is invoked to change the pages of the games list.
      */
     private class changePageListener implements ActionListener{
 
-        private int page;
+        public static int page;
         private Container mainContainer;
         private int nextButtonHash;
         private int maxPages, gamesPerPage;
 
-        public changePageListener(int page, Container mContainer, int nextHash, int gamesPerPage)
+        public changePageListener(int startPage, Container mContainer, int nextHash, int gamesPerPage)
         {
-            this.page = page;
+            page = startPage;
             this.mainContainer = mContainer;
             this.nextButtonHash = nextHash;
             this.maxPages = ((curGames.length-1) /gamesPerPage);
@@ -384,39 +404,106 @@ public class UIManager {
 
             timerAction.resetTimer();
 
-            mainContainer.getComponent(1).setVisible(false);
-            mainContainer.remove(1);
+            //if randomizer is used
+            if(randomizedGame != -1)
+            {
+                mainContainer.getComponent(0).setVisible(false);
+                mainContainer.remove(0);
+
+                if(page < maxPages)
+                {
+                    page++;
+                    mainContainer.add(createSingleGameView(page), 0);
+                } else {
+                    Random rand = new Random();
+                    boolean selected = false;
+                    while(!selected)
+                    {
+                        selected = true;
+                        int gameNum = rand.nextInt(ga.getGameAmount());
+                        Game game = ga.getGameAtIndex(gameNum);
+                        for(int i = 0; i < 15; i++)
+                        {
+                            if(game == curGames[i])
+                            {
+                                selected = false;
+                            }
+                        }
+
+                        if(selected)
+                        {
+                            curGames[randomizedGame] = game;
+                        }
+                    }
+
+                    mainContainer.add(createSingleGameView(randomizedGame), 0);
+                    
+                    randomizedGame = (randomizedGame + 1) % 15;
+                }
+
+                mainContainer.validate();
+                return;
+            }
+
+            mainContainer.getComponent(0).setVisible(false);
+            mainContainer.remove(0);
             if(e.getSource().hashCode() == nextButtonHash)
             {
                 page += 1;
                 if(page == maxPages)
                 {
-                    mainContainer.getComponent(1).setVisible(false);
+                    mainContainer.getComponent(0).setVisible(false);
                 }
                 
                 if(page == 1)
                 {
-                    mainContainer.getComponent(2).setVisible(true);
+                    mainContainer.getComponent(1).setVisible(true);
                 }
             }
             else{
                 page -= 1;
                 if(page == 0)
                 {
-                    mainContainer.getComponent(2).setVisible(false);
+                    mainContainer.getComponent(1).setVisible(false);
                 }
                 
                 if(page == maxPages-1)
                 {
-                    mainContainer.getComponent(1).setVisible(true);
+                    mainContainer.getComponent(0).setVisible(true);
                 }
             }
 
-            //System.out.println("Page is at: " + page);
-            mainContainer.add(createGameListContainer(page, gamesPerPage), 1);
+            //Changing the page num label
+            JLabel pageNumLabel = JLabel.class.cast(mainContainer.getComponent(2));
+            pageNumLabel.setText((page + 1) + " / " + (maxPages + 1));
+
+            Container pageContainer = singleGameView ? createSingleGameView(page) : createGameListContainer(page, gamesPerPage);
+
+            mainContainer.add(pageContainer, 0);
+
+            //System.out.println("Page changed to " + page);
 
             mainContainer.validate();
         }
+    }
+
+    private class changePKeyListener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            //Nothing
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            //Nothing
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            //JButton.class.cast(e.getSource()).get
+        }
+
     }
 
     private class gameListListener implements ActionListener{
@@ -483,6 +570,11 @@ public class UIManager {
 
     private class toStartListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
+
+            startContainer.remove(startContainer.getComponentCount() - 1);
+            startContainer.add(getBgImage());
+            startContainer.repaint();
+
             gameViewFrame.setVisible(false);
         }
     }
@@ -496,6 +588,42 @@ public class UIManager {
         }
     }
 
+    private class listViewListener implements ActionListener{
+
+        public void actionPerformed(ActionEvent e) {
+            singleGameView = false;
+
+            Container outerContainer = JButton.class.cast(e.getSource()).getParent().getParent();
+
+            outerContainer.remove(1);
+            outerContainer.add(createGameViewObjects(changePageListener.page / gamesInList));
+
+            gameViewFrame.repaint();
+            
+        }
+    }
+
+    private class singleViewListener implements ActionListener{
+
+        public void actionPerformed(ActionEvent e) {
+            singleGameView = true;
+
+            JButton button = JButton.class.cast(e.getSource());
+            String num = button.getText();
+            num = num.replace(".", "");
+
+            int pos = Integer.parseInt(num) - 1;
+
+            Container outerContainer = button.getParent().getParent().getParent();
+
+            outerContainer.remove(1);
+            outerContainer.add(createGameViewObjects(pos));
+
+            gameViewFrame.repaint();
+            
+        }
+    }
+    
     private class randGameListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             createRandomGameFrame();
@@ -511,7 +639,7 @@ public class UIManager {
     //#endregion Listeners
 
 
-    //#region Game View Methods
+    //#region Game View
     
     /**
      * This method makes the game list visible from the curGames object
@@ -542,20 +670,21 @@ public class UIManager {
         int listLength = (curGames.length / (gamesPerPage*(page+1))); 
         listLength = ((listLength) != 0) ? gamesPerPage : (curGames.length % gamesPerPage);
 
-        //System.out.println("List length is: " + listLength);
-
         for(int i = 0; i < listLength; i++)
         {
             Game curGame = curGames[i + (gamesPerPage*page)];
             String gameName = curGame.getName();
             int gameNum = (page*gamesPerPage) + i;
 
-            //System.out.println("Added game " + i + gameName);
+            int buttonWidth = 100;
+            JButton viewGameButton = createButton((gameNum+1) + ".", new singleViewListener(), GAME_FONT, BUTTON_COLOR, BUTTON_TEXT_COLOR);
+            viewGameButton.setBounds((gameNameWidth + 10) * (i / (gamesPerPage/3)), (gameNameHeight+5) *(i % (gamesPerPage/3)), buttonWidth, gameNameHeight);
+            gameListContainer.add(viewGameButton);
 
-            JLabel gameLabel = new JLabel( (gameNum+1) + ". " + gameName);
+            JLabel gameLabel = new JLabel( " " + gameName);
             gameLabel.setFont(GAME_FONT);
             gameLabel.setForeground(GAME_FONT_COLOR);
-            gameLabel.setBounds((gameNameWidth) * (i / (gamesPerPage/3)), (gameNameHeight+5) *(i % (gamesPerPage/3)), gameNameWidth - 10, gameNameHeight);
+            gameLabel.setBounds((gameNameWidth + 10) * (i / (gamesPerPage/3)) + buttonWidth, (gameNameHeight+5) *(i % (gamesPerPage/3)), gameNameWidth - buttonWidth, gameNameHeight);
             gameListContainer.add(gameLabel);
         }
 
@@ -565,54 +694,86 @@ public class UIManager {
     /**
      * This method creates the objects nessesary to view the game list:
      * The container showing the games, the page chage buttons, back to start button.
-     * @param mainContainer the container these objects are added to.
+     * @return the container these objects are added to.
      */
-    private void createGameViewObjects(Container mainContainer)
+    private Container createGameViewObjects(int... page)
     {
-        int gamesPerPage = 15;
+        int pageNum = 0;
+        if(page.length != 0)
+        {
+            pageNum = page[0];
+        }
+
+        Container mainContainer = new Container();
+        mainContainer.setBounds(0, 0, screenWidth, screenHeight);
+
+        int gamesPerPage = singleGameView ? 1 : gamesInList;
+        int heightOffset = singleGameView ? 800 : 670;
         
         int leftBorder = 50;
-
-        mainContainer.add(createGameListContainer(0, gamesPerPage));
         
+        Container pageContainer = singleGameView ? createSingleGameView(pageNum) : createGameListContainer(pageNum, gamesPerPage);
+
+        mainContainer.add(pageContainer);
+
         Font listButtonFont = new Font(TITLE_FONT.getFontName(), 1, 40);
 
         if(curGames != null)
         {
+            int pageNumWidth = 160;
+
             //Creating the next and previous page controllers using the same listener
-            JButton nextPageButton = new JButton(">");
-            changePageListener cpListener = new changePageListener(0, mainContainer, nextPageButton.hashCode(), gamesPerPage);
+            JButton nextPageButton = createButton(">", null, listButtonFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
+            changePageListener cpListener = new changePageListener(pageNum, mainContainer, nextPageButton.hashCode(), gamesPerPage);
             nextPageButton.addActionListener(cpListener);
-            nextPageButton.setBounds((screenWidth / 2) + 10, 670, 100, 50);
-            nextPageButton.setFont(listButtonFont);
-            nextPageButton.setBackground(BUTTON_COLOR);
-            nextPageButton.setForeground(BUTTON_TEXT_COLOR);
+            
+            //nextPageButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "pressed");
+            //nextPageButton.getActionMap().put("pressed", nextPageButton.getAction());
+
+            nextPageButton.setBounds((screenWidth / 2) + (pageNumWidth / 2), heightOffset, 100, 50);
             mainContainer.add(nextPageButton);
 
-            JButton prevPageButton = new JButton("<");
-            prevPageButton.addActionListener(cpListener);
-            prevPageButton.setBounds((screenWidth / 2) - 110, 670, 100, 50);
-            prevPageButton.setFont(listButtonFont);
-            prevPageButton.setBackground(BUTTON_COLOR);
-            prevPageButton.setForeground(BUTTON_TEXT_COLOR);
+            JButton prevPageButton = createButton("<", cpListener, listButtonFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
+            prevPageButton.setBounds((screenWidth / 2) - (100 + (pageNumWidth / 2)), heightOffset, 100, 50);
             mainContainer.add(prevPageButton);
 
-            //setting the buttons invisible if no other pages are available        
-            prevPageButton.setVisible(false);
-            if(curGames.length <= gamesPerPage)
+            //setting the buttons invisible if no other pages are available    
+            if(pageNum == 0)
+            {
+                prevPageButton.setVisible(false);
+            }    
+
+            if( pageNum == (curGames.length - 1) / gamesPerPage)
             {
                 nextPageButton.setVisible(false);
+            }
+
+            //Page number string
+            String pageNumString = (randomizedGame == -1) ? ((pageNum + 1) + " / " + (((curGames.length - 1) / gamesPerPage) + 1)) : "";
+            JLabel pageNumLabel = new JLabel( pageNumString, SwingConstants.CENTER);
+            pageNumLabel.setFont(GAME_FONT);
+            pageNumLabel.setForeground(GAME_FONT_COLOR);
+            pageNumLabel.setBounds((screenWidth / 2) - (pageNumWidth / 2), heightOffset, pageNumWidth, 50);
+            mainContainer.add(pageNumLabel);
+
+            //Listed view button
+            if(singleGameView && randomizedGame == -1)
+            {
+                JButton listViewButton = createButton("See List", new listViewListener(), listButtonFont, BUTTON_COLOR, BUTTON_TEXT_COLOR);
+                listViewButton.setBounds((screenWidth / 2) - (pageNumWidth * 2 / 3), heightOffset + 60, pageNumWidth * 4 / 3, 50);
+                mainContainer.add(listViewButton);
             }
             
         }
 
-        JButton backToStartButton = new JButton("<-- Selection");
-        backToStartButton.addActionListener(new toStartListener());
-        backToStartButton.setBounds(leftBorder, 670, 200, 50);
-        backToStartButton.setFont(TO_START_FONT);
-        backToStartButton.setBackground(BUTTON_COLOR);
-        backToStartButton.setForeground(BUTTON_TEXT_COLOR);
+        //Back to the selection screen button
+        JButton backToStartButton = createButton("<-- Selection", new toStartListener(), TO_START_FONT, BUTTON_COLOR, BUTTON_TEXT_COLOR);
+        backToStartButton.setBounds(leftBorder, heightOffset, 200, 50);
         mainContainer.add(backToStartButton);
+
+        mainContainer.add(getBgImage());
+
+        return mainContainer;
 
     }
     
@@ -624,27 +785,224 @@ public class UIManager {
     public void gameSelectionDone(Game[] sortedGames)
     {
         selectionBeingMade = false;
+        randomizedGame = -1;
         timerAction.resetTimer();
 
         curGames = sortedGames;
+        singleGameView = (curGames != null);
 
         initializeGameViewFrame();
 
         Container mainContainer = new Container();
+        mainContainer.setBounds(0, 0, screenWidth, screenHeight);
 
         JLabel titleLabel = new JLabel("Games Best Fitting Your Preferences", SwingConstants.CENTER);
         titleLabel.setFont(new Font(TITLE_FONT.getFontName(), 1, 70));
         titleLabel.setForeground(TITLE_COLOR);
-        titleLabel.setBounds(0, 0, screenWidth, 200);
+        titleLabel.setBounds(0, 0, screenWidth, 160);
         mainContainer.add(titleLabel);
 
-        createGameViewObjects(mainContainer);
+        mainContainer.add(createGameViewObjects());
         
         gameViewFrame.add(mainContainer);
 
         gameViewFrame.setVisible(true);
     }
 
-    //#endregion Game View Methods
+    /**
+     * This method creates a game view container containing the information of a single game.
+     * @param gameNum the array position of the game from curGames
+     * @return the container with the information
+     */
+    public Container createSingleGameView(int gameNum)
+    {
+        int gameNameHeight = 80;
+        int leftBorder = 20;
+        int gameNameWidth = ((screenWidth - (2*leftBorder))/3);
+     
+        JPanel gameListContainer = new JPanel();
+        gameListContainer.setLayout(null);
+        gameListContainer.setOpaque(false);
+        gameListContainer.setBorder(BorderFactory.createLineBorder(GAME_FONT_COLOR, 6));
+        gameListContainer.setBounds(leftBorder * 3, 145, screenWidth - (leftBorder * 6) , gameNameWidth + 80);
+
+        Game curGame = curGames[gameNum];
+
+        String titleString = "";
+        if(randomizedGame == -1)
+        {
+            titleString = (gameNum + 1) + ". ";
+        }
+        titleString += curGame.getName();
+        JLabel titleLabel = new JLabel(titleString, SwingConstants.CENTER);
+        titleLabel.setFont(TITLE_FONT);
+        titleLabel.setForeground(TITLE_COLOR);
+        titleLabel.setBounds(0, 0, screenWidth - leftBorder * 4, 100);
+        gameListContainer.add(titleLabel);
+
+        Container innerGameContainer = new Container();
+        innerGameContainer.setBounds(0, 100, screenWidth - leftBorder * 4, gameNameWidth - 20);
+
+        // Image of the game
+        JLabel imageDisplay = curGame.getImage();
+        if(imageDisplay != null)
+        {   
+            imageDisplay.setLocation(((gameNameWidth - imageDisplay.getWidth()) / 2) + 5, ((gameNameWidth - imageDisplay.getHeight()) / 2) - 20);
+            innerGameContainer.add(imageDisplay);
+        }
+
+        JTextPane descLabel = new JTextPane();
+        descLabel.setText(curGame.getDescription());
+        descLabel.setFont(new Font(TITLE_FONT.getFontName(), 2, 30));
+        descLabel.setEditable(false);
+        descLabel.setForeground(GAME_FONT_COLOR);
+        descLabel.setBounds((int) (gameNameWidth * 1.2), 40, (int) (gameNameWidth * 1.4), (int) (gameNameHeight * 2.5));
+        descLabel.setOpaque(false);
+
+        innerGameContainer.add(descLabel);
+
+        //Game Variables
+        Container gameVarContainer = new Container();
+        //JPanel gameVarContainer = new JPanel();
+        gameVarContainer.setBounds( gameNameWidth, gameNameHeight * 2, gameNameWidth * 2, 500);
+
+        JLabel ratingLabel = new JLabel("Rating: " + curGame.getRating() + " / 100");
+        ratingLabel.setFont(GAME_INFO_FONT);
+        ratingLabel.setForeground(GAME_FONT_COLOR);
+        ratingLabel.setBounds((gameNameWidth / 2), 0, gameNameWidth - 10, gameNameHeight);
+        gameVarContainer.add(ratingLabel);
+
+        JLabel typeLabel = new JLabel("Type: " + curGame.getType().name());
+        typeLabel.setFont(GAME_INFO_FONT);
+        typeLabel.setForeground(GAME_FONT_COLOR);
+        typeLabel.setBounds(0, (gameNameHeight), gameNameWidth - 10, gameNameHeight);
+        gameVarContainer.add(typeLabel);
+
+        String subtype1Text = "Subtypes: " + curGame.getSubtype(0);
+        //subtype1Text += (curGame.getSubtype(1) == "" ? "" : "/" );
+
+        JLabel subTypeLabel = new JLabel(subtype1Text);
+        subTypeLabel.setFont(TO_START_FONT);
+        subTypeLabel.setForeground(GAME_FONT_COLOR);
+        subTypeLabel.setBounds( 15, (gameNameHeight * 3 / 2), gameNameWidth - 10, gameNameHeight);
+        gameVarContainer.add(subTypeLabel);
+
+        String subtype2Text = curGame.getSubtype(1);
+        //subtype2Text += ((curGame.getSubtype(2) == "" ? "" : "/ " + curGame.getSubtype(2) ));
+
+        JLabel subTypeLabel2 = new JLabel(subtype2Text);
+        subTypeLabel2.setFont(TO_START_FONT);
+        subTypeLabel2.setForeground(GAME_FONT_COLOR);
+        subTypeLabel2.setBounds( 148, (gameNameHeight * 3 / 2) + 25, gameNameWidth - 10, gameNameHeight);
+        gameVarContainer.add(subTypeLabel2);
+        
+        String plCntString = "Player Count: ";
+        plCntString += (curGame.getMaxPlayerCount() == curGame.getMinPlayerCount()) ? curGame.getMinPlayerCount() 
+                                : (curGame.getMinPlayerCount() + "-" + curGame.getMaxPlayerCount());
+
+        JLabel playerCountLabel = new JLabel(plCntString);
+        playerCountLabel.setFont(GAME_INFO_FONT);
+        playerCountLabel.setForeground(GAME_FONT_COLOR);
+        playerCountLabel.setBounds(gameNameWidth, ((gameNameHeight)), gameNameWidth - (leftBorder * 4), gameNameHeight);
+        gameVarContainer.add(playerCountLabel);
+
+        JLabel opPlLabel = new JLabel("Optimal Player Count: " + curGame.getOpPlayerCountStr());
+        opPlLabel.setFont(TO_START_FONT);
+        opPlLabel.setForeground(GAME_FONT_COLOR);
+        opPlLabel.setBounds(gameNameWidth + 15, (gameNameHeight * 3 / 2), gameNameWidth - 10, gameNameHeight);
+        gameVarContainer.add(opPlLabel);
+
+        String timeString = "Play Time: ";
+        timeString += (curGame.getMaxPlayTime() == curGame.getMinPlayTime()) ? curGame.getMinPlayTime() 
+                                : (curGame.getMinPlayTime() + "-" + curGame.getMaxPlayTime());
+
+        timeString += " min";
+
+        JLabel playTimeLabel = new JLabel(timeString);
+        playTimeLabel.setFont(GAME_INFO_FONT);
+        playTimeLabel.setForeground(GAME_FONT_COLOR);
+        playTimeLabel.setBounds(0, ((gameNameHeight+15) * 2), gameNameWidth, gameNameHeight);
+        gameVarContainer.add(playTimeLabel);
+
+        String diffString = "Difficulty: " + curGame.getDifficulty() / 100 + ".";
+        diffString += ((curGame.getDifficulty() % 100) < 10) ? "0" : "";
+        diffString += curGame.getDifficulty() % 100 + " / 5";
+
+        JLabel difficultyLabel = new JLabel(diffString);
+        difficultyLabel.setFont(GAME_INFO_FONT);
+        difficultyLabel.setForeground(GAME_FONT_COLOR);
+        difficultyLabel.setBounds(gameNameWidth, ((gameNameHeight+15) * 2), gameNameWidth, gameNameHeight);
+        gameVarContainer.add(difficultyLabel);
+        
+        innerGameContainer.add(gameVarContainer);
+
+        gameListContainer.add(innerGameContainer);
+
+        return gameListContainer;
+    }
+
+    //#endregion Game View
+
+    //#region Helpers
+
+    public JButton createButton(String text, ActionListener listener, Font font, Color background, Color foreground)
+    {
+        JButton button = new JButton(text);
+        if(listener != null)
+        {
+            button.addActionListener(listener);
+        }
+        button.setFont(font);
+        button.setBackground(background);
+        button.setForeground(foreground);
+        
+        return button; 
+    }
+
+    private void initialLoads()
+    {
+        //Load the backgrounds
+        try{
+
+            bgImage = new ImageIcon[bgCount];
+
+            for(int i = 0; i < bgCount; i++)
+            {
+                File bgFile = new File("resources/Backgrounds/Background" + (i+1) + ".png");
+        
+                Image bgImg = ImageIO.read(bgFile);
+        
+                bgImage[i] = new ImageIcon(bgImg);
+            }
+            
+    
+        } catch (Exception e) {
+            System.out.println("Background image not found.");
+        }
+
+        curBg = 1;
+    }
+
+    //#endregion Helpers
+
+    //#region Getters
+
+    public JLabel getBgImage()
+    {
+        Random rand = new Random();
+
+        if(rand.nextInt(5) >= 4)
+        {
+            curBg = rand.nextInt(bgCount);
+            System.out.println("Background changed to " + curBg);
+        }
+
+        JLabel bgLabel = new JLabel(bgImage[curBg]);
+        bgLabel.setBounds(0, 0, screenWidth, screenHeight);
+
+        return bgLabel;
+    }
+
+    //#endregion Getters
 
 }

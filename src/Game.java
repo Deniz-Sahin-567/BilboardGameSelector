@@ -4,6 +4,13 @@
  * @author Deniz Sahin
  */
 
+import javax.swing.JLabel;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+
+import java.io.File;
 
 public class Game {
 
@@ -69,6 +76,10 @@ public class Game {
     private int minPlayTime, maxPlayTime;
     private int difficulty, rating;
     private GameType type;
+    private String[] subtype;
+    private String description;
+    private JLabel gameImage;
+    
 
 
     /**
@@ -84,12 +95,13 @@ public class Game {
      * @param gameDifficulty The difficulty rating of the game out of 5 (BGG)
      * @param gameRating The rating of the game out of 10 (BGG)
      * @param gameType The type of the game: Strategy, Party or Both
+     * @param gameSubtype The more specific subtype of the game
      */
     public Game (String gameName,
                 int gameCount, int gameMinPlayerCount, int gameMaxPlayerCount, boolean gameEvenPlayerCount,
                 int[] gameOpPlayerCount, int gameMinPlayTime, int gameMaxPlayTime,
                 int gameDifficulty, int gameRating,
-                String gameType)
+                String gameType, String[] gameSubtype, String gameDescription)
     {
         name = gameName;
         count = gameCount;
@@ -99,6 +111,7 @@ public class Game {
         opPlayerCount = gameOpPlayerCount;
         minPlayTime = gameMinPlayTime;
         maxPlayTime = gameMaxPlayTime;
+        subtype = gameSubtype;
 
         if(gameDifficulty < 100 || gameDifficulty > 500)
         {
@@ -127,12 +140,64 @@ public class Game {
             System.out.println("Game type definition was wrong for " + name + ". Game type: " + gameType);
             System.exit(2);
         }
+
+        //Game Description
+        description = "\"";
+        description += gameDescription;
+        description += "\"";
+
+        //Getting the image of the game
+        try {
+            int imageSize = App.getScreenWidth() * 3 / 10;
+
+            String gameNameStr = name;
+            gameNameStr = gameNameStr.replace(" ", "");
+
+            File imgFile = new File("resources/images/" + gameNameStr + ".jpg");
+
+            BufferedImage gameBufImg = ImageIO.read(imgFile);
+            Image gameImg;
+
+            gameImage = new JLabel();
+            int bufHeight = gameBufImg.getHeight();
+            int bufWidth = gameBufImg.getWidth();
+
+            //rescaling the image if necessary
+            if(((bufWidth < imageSize) && (bufHeight < imageSize)) // if both sizes are smaller than imageSize
+                    && ((bufWidth > imageSize - 100) || (bufHeight > imageSize - 100))) // if at least one of the sizes is greater than imageSize - 100
+            {
+                gameImg = gameBufImg;
+                gameImage.setSize(bufWidth, bufHeight);
+                //System.out.println("Game not resized: " + gameName);
+            } else {
+                //Showing the image to scale
+                int imgHeight = imageSize - 50;
+                int imgWidth = -1;
+
+                gameImage.setSize(imgHeight, imgHeight);
+                if(bufWidth > bufHeight)
+                {
+                    imgWidth = imgHeight;
+                    imgHeight = -1;
+                }
+                System.out.println("Image resized" + gameName);
+                
+                gameImg = gameBufImg.getScaledInstance(imgWidth, imgHeight, java.awt.Image.SCALE_SMOOTH); 
+            }
+
+            ImageIcon gameImgIcon = new ImageIcon(gameImg);
+            gameImage.setIcon(gameImgIcon);
+
+        } catch (Exception e) {
+            System.out.println("Image not found " + name);
+        }
+
     }
 
     /**
      * Copy constructor for game class.
      * @param copied The game being coppied (opPlayerCount is bound do not change)
-     */
+     
     public Game (Game copied)
     {
         name = copied.name;
@@ -146,8 +211,9 @@ public class Game {
         difficulty = copied.difficulty;
         rating = copied.rating;
         type = copied.type;
+        subtype = copied.subtype;
     }
-
+    */
 
 
     public String toString() {
@@ -197,14 +263,14 @@ public class Game {
      * @return Formatted stirng of opPlayerCount
      */
     public String getOpPlayerCountStr() {
-        String str = "[ " + String.valueOf(opPlayerCount[0]);
+        String str = "" + String.valueOf(opPlayerCount[0]);
         
         for (int i = 1; i < opPlayerCount.length; i++)
         {
             str += (", " + opPlayerCount[i]);
         }
 
-        str +=  "]";
+        str +=  "";
 
         return str;
     }
@@ -227,6 +293,23 @@ public class Game {
 
     public GameType getType() {
         return this.type;
+    }
+
+    public JLabel getImage() {
+        return this.gameImage;
+    }
+
+    public String getSubtype(int no) {
+        if(subtype.length <= no)
+        {
+            return "";
+        }
+        
+        return subtype[no];
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 //#endregion Getters
 
