@@ -14,17 +14,14 @@ import java.awt.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.JPanel;
-import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
 
 import java.io.File;
 
@@ -125,7 +122,7 @@ public class UIManager {
 
         int leftBorder = screenWidth * 57 / 1000;
 
-        JLabel titleLabel = new JLabel("Bilboard Game Selector v2.0-a", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Bilboard Game Selector v2.0", SwingConstants.CENTER);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TITLE_COLOR);
         titleLabel.setBounds(0, 0, screenWidth, 200);
