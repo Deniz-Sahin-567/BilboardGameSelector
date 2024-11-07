@@ -7,7 +7,7 @@ In order to use this program:
 - Compile the files in the src directory into a .jar file. (Or download the executable from the release files)
 - Add the file named GameList.txt into the same directory as your executable.
 - Add a folder named resources in the directory.
-  - Add a folder named backgrounds and add the three backgrounds in there.
+  - Add a folder named Backgrounds and add the three backgrounds in there.
   - Add a folder named images and add the game images in there.
 - Run the executable.
 
@@ -28,8 +28,12 @@ In order to run the program with a different game list:
     - Type: Strategy OR Party OR Both
     - Subtype: Any strings divided by forward slashes '/'
     - Explanation: A short explanation of what the game is about.
+- In the resources file change the contents of the backgrounds folder as you wish.
+  - Any background you add should have the name Background1.png with 1 indicating an increasing number starting at 1.
+- Similarly in the resources file change the images file as you wish.
+  - Add the game box images as you want, naming them GameName.jpg. Do not put spaces in the names.
 > [!TIP]                
-> The formatting can be obtained by using a google-sheets with each piece of information seperated to a different cell and then the entire document copy-pasted. (Do not copy the tag row.)
+> The formatting of the GameList.txt file can be obtained by using a google-sheets with each piece of information seperated to a different cell and then the entire document copy-pasted. (Do not copy the tag row.)
 
 ## Copying of the code
 This code is licensed under the GNU GENERAL PUBLIC LICENSE VERSION 3.
